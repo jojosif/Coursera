@@ -34,18 +34,18 @@ corr <- function(directory, threshold = 0) {
 }
 
 ## Test
-cr <- corr("~/Desktop/specdata", 150)
-head(cr)
-summary(cr)
-
-cr <- corr("~/Desktop/specdata", 400)
-head(cr)
-summary(cr)
-
-cr <- corr("~/Desktop/specdata", 5000)
-summary(cr)
-length(cr)
-
-cr <- corr("~/Desktop/specdata")
-summary(cr)
-length(cr)
+# cr <- corr("~/Desktop/specdata", 150)
+# head(cr)
+# summary(cr)
+# 
+# cr <- corr("~/Desktop/specdata", 400)
+# head(cr)
+# summary(cr)
+# 
+# cr <- corr("~/Desktop/specdata", 5000)
+# summary(cr)
+# length(cr)
+# 
+# cr <- corr("~/Desktop/specdata")
+# summary(cr)
+# length(cr)
