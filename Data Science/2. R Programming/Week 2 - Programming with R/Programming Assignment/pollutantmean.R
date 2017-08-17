@@ -19,7 +19,7 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
         file_name <- sprintf("%03d.csv", i)
         file_name <- paste(directory, "/", file_name, sep = "")
                                 
-        dataset <- read.csv(file = file_name, head = TRUE, sep = ",")
+        dataset <- read.csv(file = file_name, header = TRUE, sep = ",")
         vec <- dataset[, pollutant] # Create a vector with the specified values
         val <- vec[!is.na(vec)] # Extract the values of the vector and filter missing values      
         accum <- c(accum, val) # Accumulate non-missing values
@@ -28,7 +28,7 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
     mean(accum)
 }
 
-## Testing code
+## Test
 # pollutantmean("~/Desktop/specdata", "sulfate", 1:10)
 # pollutantmean("~/Desktop/specdata", "nitrate", 70:72)
 # pollutantmean("~/Desktop/specdata", "nitrate", 23)
