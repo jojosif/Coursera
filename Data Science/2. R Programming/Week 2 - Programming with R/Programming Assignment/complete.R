@@ -32,7 +32,7 @@ complete <- function(directory, id = 1:332) {
 }
 
 ## Test
-# complete("~/Desktop/specdata", 1)
-# complete("~/Desktop/specdata", c(2, 4, 8, 10, 12))
-# complete("~/Desktop/specdata", 30:25)
-# complete("~/Desktop/specdata", 3)
+# complete("specdata", 1)
+# complete("specdata", c(2, 4, 8, 10, 12))
+# complete("specdata", 30:25)
+# complete("specdata", 3)

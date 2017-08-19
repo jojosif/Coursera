@@ -29,6 +29,6 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
 }
 
 ## Test
-# pollutantmean("~/Desktop/specdata", "sulfate", 1:10)
-# pollutantmean("~/Desktop/specdata", "nitrate", 70:72)
-# pollutantmean("~/Desktop/specdata", "nitrate", 23)
+# pollutantmean("specdata", "sulfate", 1:10)
+# pollutantmean("specdata", "nitrate", 70:72)
+# pollutantmean("specdata", "nitrate", 23)
