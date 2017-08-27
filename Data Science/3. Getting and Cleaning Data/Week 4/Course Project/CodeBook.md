@@ -1,6 +1,5 @@
 # Getting and Cleaning Data - Course Project
 
-## About
 To describe the variables, the data, and any transformations or work that are performed to clean up the data.
 
 ## Data Source Full Description
