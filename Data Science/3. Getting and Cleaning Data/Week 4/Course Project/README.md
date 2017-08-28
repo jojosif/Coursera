@@ -1,4 +1,4 @@
-# Getting and Cleaning Data - Course Project
+# Getting and Cleaning Data Course Project
 
 The data for the project: [Human Activity Recognition Using Smartphones Dataset](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip "Click to download the data")
 
