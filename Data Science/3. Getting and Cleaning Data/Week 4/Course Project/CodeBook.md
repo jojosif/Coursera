@@ -1,4 +1,4 @@
-# Getting and Cleaning Data - Course Project
+# Getting and Cleaning Data Course Project
 
 To describe the variables, the data, and any transformations or work that are performed to clean up the data.
 
