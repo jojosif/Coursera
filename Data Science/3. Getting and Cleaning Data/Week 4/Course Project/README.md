@@ -16,5 +16,5 @@ Targets | Items
 R Analysis Script | [run_analysis.R](https://github.com/theodoreguo/Coursera/blob/master/Data%20Science/3.%20Getting%20and%20Cleaning%20Data/Week%204/Course%20Project/run_analysis.R "run_analysis.R")
 Tidy Data Set | [tidyData.txt](https://github.com/theodoreguo/Coursera/blob/master/Data%20Science/3.%20Getting%20and%20Cleaning%20Data/Week%204/Course%20Project/tidyData.txt "tidyData.txt")
 GitHub Repo | [Repo Link](https://github.com/theodoreguo/Coursera/tree/master/Data%20Science/3.%20Getting%20and%20Cleaning%20Data/Week%204/Course%20Project "Click to go to repo")
-Cook Book | [CodeBook.md](https://github.com/theodoreguo/Coursera/blob/master/Data%20Science/3.%20Getting%20and%20Cleaning%20Data/Week%204/Course%20Project/CodeBook.md "CodeBook.md")
+Code Book | [CodeBook.md](https://github.com/theodoreguo/Coursera/blob/master/Data%20Science/3.%20Getting%20and%20Cleaning%20Data/Week%204/Course%20Project/CodeBook.md "CodeBook.md")
 README | [README.md](https://github.com/theodoreguo/Coursera/blob/master/Data%20Science/3.%20Getting%20and%20Cleaning%20Data/Week%204/Course%20Project/README.md "README.md")
