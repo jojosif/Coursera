@@ -33,7 +33,7 @@ with(totalEmissions,
           xlab = "Year",
           ylab = "PM2.5 Emissions (tons)", 
           main = "PM2.5 Emissions in Baltimore, Maryland",
-          xlim = c(1999,2008))
+          xlim = c(1999, 2008))
 )
 
 axis(side = 1, at = totalEmissions$year) # Label the x axis

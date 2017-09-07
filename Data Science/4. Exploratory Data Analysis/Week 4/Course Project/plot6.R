@@ -1,5 +1,5 @@
 library("data.table")
-library("ggplot2")
+library(ggplot2)
 
 # Download and load data
 path <- getwd()

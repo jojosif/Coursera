@@ -1,5 +1,5 @@
 library("data.table")
-library("ggplot2")
+library(ggplot2)
 
 # Download and load data
 path <- getwd()
@@ -21,7 +21,7 @@ vehiclesSCC <- SCC[condition, SCC]
 vehiclesNEI <- NEI[NEI[, SCC] %in% vehiclesSCC, ]
 
 # Subset the vehicles NEI data to Baltimore's fip
-baltimoreVehiclesNEI <- vehiclesNEI[fips=="24510", ]
+baltimoreVehiclesNEI <- vehiclesNEI[fips == "24510", ]
 
 # Create the plot
 png("plot5.png", width = 480, height = 480)

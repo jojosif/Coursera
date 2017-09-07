@@ -1,5 +1,5 @@
 library("data.table")
-library("ggplot2")
+library(ggplot2)
 
 # Download and load data
 path <- getwd()
@@ -16,7 +16,7 @@ NEI <- data.table::as.data.table(x = readRDS(file = "summarySCC_PM25.rds"))
 SCC <- data.table::as.data.table(x = readRDS(file = "Source_Classification_Code.rds"))
 
 # Subset NEI data by Baltimore
-baltimoreNEI <- NEI[fips=="24510", ]
+baltimoreNEI <- NEI[fips == "24510", ]
 
 # Create the plot
 png("plot3.png", width = 480, height = 480)
