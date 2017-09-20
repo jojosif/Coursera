@@ -1,0 +1,125 @@
+---
+title: 'Regression Models: Peer Assessment'
+output:
+  html_document:
+    keep_md: yes
+---
+    
+## Executive Summary
+    
+The report will do some study to obtain whether an automatic or manual transmission is better for MPG. We used the dataset `mtcars` which is from the 1974 Motor Trend US magazine, and ran a statistical test and a regression analysis. On one hand, the statistical test shows a difference in mean of about 7 miles more for the manual transmitted cars. On the other hand, the regression analysis indicates that manual transmitted cars are only 1.8 miles better than automatic transmitted cars if taking into account other variables like horse power and weight, but this result is not significant. So to get a better mileage, it's probably better to consider cars of a certain weight and horse power than to consider manual or automatic transmission.
+
+## Data Preprocessing
+
+Data loading and summary.
+
+```{r}
+data(mtcars)
+str(mtcars)
+head(mtcars)
+```
+
+Convert "cyl", "vs", "gear", "carb" and "am" variables to factor variables.
+
+```{r}
+mtcars$cyl <- factor(mtcars$cyl)
+mtcars$vs <- factor(mtcars$vs)
+mtcars$gear <- factor(mtcars$gear)
+mtcars$carb <- factor(mtcars$carb)
+mtcars$am <- factor(mtcars$am)
+```
+
+Rename the levels of the "am" variable to "Auto" and "Manual".
+
+```{r}
+levels(mtcars$am) <- c("Auto", "Manual")
+```
+
+## Graphics
+
+We begin with plotting boxplots of the variable "mpg" when "am" is "Auto" or "Manual" (Figure 1 in the appendix). This plot hints at an increase in "mpg" when gearing was manual but this data may have other variables which may play a bigger role in determination of "mpg".
+
+We then plot the relationships between all the variables of the dataset (Figure 2 in the appendix). We may note that variables like "cyl", "disp", "hp", "drat", "wt", "vs" and "am" seem highly correlated to "mpg".
+
+## Inference
+
+Conduct t-test to compare the mpg means between automatic and manual transmissions.
+
+### T-test
+
+Use a t-test assuming that the mileage data has a normal distribution.
+
+```{r}
+t.test(mpg ~ am, data = mtcars)
+```
+
+The test results clearly shows that the manual and automatic transmissions are significantly different.
+
+## Regression Analysis
+
+Use the Akaike Information Criteria (AIC) in a stepwise algorithm. This algorithm does not evaluate the AIC for all possible models but uses a search method that compares models sequentially. Thus it bears some comparison to the classical stepwise method but with the advantage that no dubious p-values are used.
+
+```{r results = 'hide'}
+model.all <- lm(mpg ~ ., data = mtcars)
+model <- step(model.all)
+```
+
+```{r}
+summary(model)
+```
+
+The AIC algorithm tells us to consider "cyl", "wt" and "hp" as confounding variables. The individual p-values allows us to reject the hypothesis that the coefficients are null. The adjusted r-squared is `r summary(model)$adj.r.squared`, so we may draw the conclusion that more than `r round(summary(model)$adj.r.squared * 100)`% of the variation is explained by the model.
+
+```{r}
+model0 <- lm(mpg ~ am, data = mtcars)
+anova(model0, model)
+```
+
+We may notice that when we compare the model with only "am" as independant variable and our chosen model, we reject the null hypothesis that the variables "cyl", "hp" and "wt" don't contribute to the accuracy of the model.
+
+The regression suggests that, other variables remaining constant, manual transmitted cars can drive `r summary(model)$coef[6]` more miles per gallon than automatic transmitted cars, and the results are not statistically significant.
+
+## Residuals and Diagnostics
+
+### Residual Analysis
+
+According to the residual plots (Figure 3 in the appendix), we can verify some assumptions made before.
+
++ The Residuals vs Fitted plot seem to verify the independance assumption as the points are randomly scattered on the plot.
++ The Normal Q-Q plot seem to indicate that the residuals are normally distributed as the points hug the line closely.
++ The Scale-Location plot seem to verify the constant variance assumption as the points fall in a constant band.
+
+### Leverages
+
+We begin by computing the leverages for the `mtcars` dataset.
+
+```{r}
+leverage <- hatvalues(model)
+```
+
+We use a hatvalue > 0.5 to find the outliers out of the observations in the dataset.
+
+```{r}
+leverage[which(leverage > 0.5)]
+```
+
+## Appendix
+
+### Figure 1 : Boxplots of "mpg" vs "am"
+
+```{r fig.width = 10, fig.height = 10}
+plot(mpg ~ am, data = mtcars, main = "MPG by Transmission Type", xlab = "Transmission Type", ylab = "Miles per Gallon")
+```
+
+### Figure 2 : Pairs Graph
+
+```{r fig.width = 10, fig.height = 10}
+pairs(mtcars, panel = panel.smooth, main = "Pairs Graph for MTCars")
+```
+
+### Figure 3 : Residual Plots
+
+```{r fig.width = 10, fig.height = 10}
+par(mfrow = c(2, 2))
+plot(model)
+```
