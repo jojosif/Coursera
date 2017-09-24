@@ -21,7 +21,7 @@ The following packages are required to reproduce.
 require(ggmap); require(leaflet); require(magrittr); require(data.table)
 ```
 
-## Data preparation
+## Data Preparation
 
 The total area (km<sup>2</sup>) and population density (/km<sup>2</sup>) data are acquired from [wikipedia](https://en.wikipedia.org/wiki/List_of_cities_proper_by_population). 
 First we load the data into a dataframe.
