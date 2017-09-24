@@ -1,0 +1,68 @@
+---
+title: 'Peer-graded Assignment: R Markdown and Leaflet'
+output:
+  html_document:
+    keep_md: yes
+---
+    
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Executive Summary
+
+This assignment is to showcase one of many use cases of the `leaflet` interactive mapping visualization package. We will discuss 5 of the big cities in China to implement population visualisation in this case. 
+
+## Required Libraries
+
+The following packages are required to reproduce.
+
+```{r 'library', eval=T, warning=FALSE, message=F}
+require(ggmap); require(leaflet); require(magrittr); require(data.table)
+```
+
+## Data preparation
+
+The total area (km<sup>2</sup>) and population density (/km<sup>2</sup>) data are acquired from [wikipedia](https://en.wikipedia.org/wiki/List_of_cities_proper_by_population). 
+First we load the data into a dataframe.
+
+```{r 'data_preparation'}
+City <- c('Shanghai', 'Beijing', 'Guangzhou', 'Nanjing', 'Chongqing')
+
+Total.area <- c(6340.5, 16410.54, 7434.4, 4713.85, 5473)
+
+Pop.dens <- c(3826, 1311, 1759, 1737, 1496)
+```
+
+Next we need to obtain the coordinate of the cities. This is being done by leveraging on `ggmap` package. However, the google API will be triggered everytime the code is being executed. Therefore, we will just manually copy the result from the API and save it in R.
+
+```{r 'get_coord'}
+lon <- c(121.47583008, 116.41113281, 113.27041626, 118.80065918, 106.92443848)
+
+lat <- c(31.21749936, 39.8928799, 23.12394255, 32.05464469, 29.41567547)
+```
+
+Now we can create a dataframe that contains all the information that we need to visualize it in `leaflet`.
+
+```{r 'create_dataframe'}
+mydata <- data.table(city = City, total.area = Total.area, pop.dens = Pop.dens, lon = lon, lat = lat)
+
+## Transform the population density value to the range of 0 and 1 for color mapping
+mydata[, color:= (pop.dens - min(pop.dens))/diff(range(pop.dens))]
+
+## Create the pop up description and urbanisation rate
+mydata[, popup:= paste0(city, '<br>Population Density: ', pop.dens, '/km2', '<br>Total Area ', total.area, 'km2')]
+```
+
+## Visualisation in Leaflet
+
+Visualize the population data in leaflet.
+
+```{r 'visualise'}
+
+## Define a color function to map the population density to a color
+
+f.color <- colorRamp(c(c('green', 'red')))
+
+leaflet(mydata) %>% addTiles() %>% addCircles(weight = 1, radius = 30000, color = f.color(mydata$color) %>% rgb(maxColorValue = 256)) %>% addMarkers(popup = mydata$popup)
+```
