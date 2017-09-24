@@ -1,0 +1,38 @@
+---
+title: 'Peer-graded Assignment: R Markdown Presentation & Plotly'
+date: '9/24/2017'
+output:
+  html_document:
+    keep_md: yes
+---
+
+## Synopsis
+
+Project Instructions:
+
++ Create a web page presentation using R Markdown that features a plot created with Plotly. Host your webpage on either GitHub Pages, RPubs, or NeoCities.
++ Your webpage must contain the date that you created the document, and it must contain a plot created with Plotly.
+
+## **mtcars** Plot
+From the `mtcars` dataset: Weight vs. MPG split by transmission type.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+data(mtcars)
+library(plotly)
+
+mtcars$am <- factor(mtcars$am, labels = c("Automatic", "Manual"))
+mtcars$car.name <- rownames(mtcars)
+
+plot_ly(mtcars, 
+		x = ~wt, 
+		y = ~mpg, 
+		color = ~factor(am), 
+		colors = c("#E00D3B", "#76CDE8"), 
+		type = "scatter", 
+		mode = "markers",
+        size = I(10), 
+        text = ~paste(car.name, '<br>Weight: ', wt, 'k pounds', '<br>', mpg, ' MPG', sep = "")) %>%
+        layout(xaxis = list(title = "Weight (thousand pounds)"),
+               yaxis = list(title = "MPG"), 
+               title = "MPG vs. Weight: mtcars dataset")
+```
