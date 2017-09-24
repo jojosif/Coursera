@@ -54,7 +54,7 @@ mydata[, color:= (pop.dens - min(pop.dens))/diff(range(pop.dens))]
 mydata[, popup:= paste0(city, '<br>Population Density: ', pop.dens, '/km2', '<br>Total Area ', total.area, 'km2')]
 ```
 
-## Visualisation in Leaflet
+## Visualization in Leaflet
 
 Visualize the population data in leaflet.
 
