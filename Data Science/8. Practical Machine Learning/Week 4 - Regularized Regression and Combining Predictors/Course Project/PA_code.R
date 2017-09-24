@@ -1,61 +1,80 @@
 # Load libraries
 library(caret)
-library(doMC)
-library(e1071)
+library(rattle)
+library(rpart)
+library(rpart.plot)
+library(randomForest)
 
-# Remove any variables from the environment
-rm(list = ls())
+# Set seed for research reproduceability
+set.seed(2017)
 
+# Download files if a local copy doesn't exist
 path <- getwd()
 destfile1 <- paste(path, "pml-training.csv", sep = "/")
 destfile2 <- paste(path, "pml-testing.csv", sep = "/")
 
-# Data URLs
-train.url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
-test.url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+url_train_set <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+url_test_set <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
 
-# Download files if a local copy doesn't exist
 if (!file.exists(destfile1)) {
-     download.file(url = train.url, destfile = destfile1)
+     download.file(url = url_train_set, destfile = destfile1)
 }
 
 if (!file.exists(destfile2)) {
-     download.file(url = train.url, destfile = destfile2)
+     download.file(url = url_test_set, destfile = destfile2)
 }
 
-# Read CSV files
-train.all <- read.csv('pml-training.csv')
-test.all <- read.csv('pml-testing.csv')
+# Read data
+complete_training_set <- read.csv("pml-training.csv", na.strings = c("NA", "#DIV/0!", ""))
+complete_testing_set <- read.csv("pml-testing.csv", na.strings = c("NA", "#DIV/0!", ""))
 
-rem.col.ids <- grep("X|user_name|cvtd_timestamp|raw_timestamp_part_1|raw_timestamp_part_2", names(train.all))
-train.clean <- train.all[, -rem.col.ids]
+# Delete some variables which are irrelevant to our current project:
+# user_name, raw_timestamp_part_1, raw_timestamp_part_2, cvtd_timestamp, new_window, num_window (columns 1 to 7)
+complete_training_set <- complete_training_set[, -c(1:7)]
+complete_testing_set <- complete_testing_set[, -c(1:7)]
 
-nzv <- nearZeroVar(train.clean[, -155])
-train.clean <- train.clean[, -nzv]
+# Create the partitions of the training data set into two data sets, 60% for training, 40% for testing
+index_training <- createDataPartition(y = complete_training_set$classe, p = 0.6, list = FALSE)
+training <- complete_training_set[index_training, ]
+testing <- complete_training_set[-index_training, ]
 
-# Some columns have mostly NAs and a little more than 400 rows with values
-# Remove those columns where the number is less than the threshold of 623 rows
-train.clean <- train.clean[, colSums(is.na(train.clean)) < 19000]
+# Delete columns with all missing values
+training <- training[, colSums(is.na(training)) == 0]
+testing <- testing[, colSums(is.na(testing)) == 0]
 
-# Set number of available CPU cores to 8
-registerDoMC(cores = 8)
+dim(training)
+head(training)
+dim(testing)
+head(testing)
 
-# Train the model
-model <- train(classe ~ ., data = train.clean, method = "rf", trControl = trainControl(method = "oob"))
-save(model, file = "model.RData")
+# Remove first ID variable so that it does not interfere with ML algorithms
+training <- training[c(-1)]
 
-results <- model$results
-save(results, file = "results.RData")
+# Use ML algorithms for prediction: Dlassification Tree
+model_fit_decission_trees <- rpart(classe ~ ., data = training, method = "class")
+rpart.plot(model_fit_decission_trees, main = "Classification Tree", extra = 102, under = TRUE, faclen = 0)
 
-# Remove the columns not used in the training data from the test data
-test.clean <- test.all[, which(names(test.all) %in% names(train.clean))]
+# Prediction
+predictions_decission_trees <- predict(model_fit_decission_trees, testing, type = "class")
 
-# Predict the answers for the test data
-answers <- predict(model, newdata = test.clean)
-save(answers, file = "answers.RData")
-answers
+# Use confusion matrix to test results
+confusionMatrix(predictions_decission_trees, testing$classe)      
 
-# Define the function provided to create the answer files and write the answers
+# Use ML algorithms for prediction: Random Forests
+model_fit_random_forest <- randomForest(classe ~ ., data = training)
+
+# Prediction
+predictions_random_forest <- predict(model_fit_random_forest, testing, type = "class")
+
+# Use confusion matrix to test results
+confusionMatrix(predictions_random_forest, testing$classe)
+
+# 53 is the "classe" column
+final_testing <- complete_testing_set[, colnames(testing[ , -c(53)])]
+predictions_complete_testing <- predict(model_fit_random_forest, final_testing, type = "class")
+predictions_complete_testing
+
+# Function to generate files with predictions
 pml_write_files = function(x) {
      n = length(x)
      for(i in 1 : n) {
@@ -64,4 +83,4 @@ pml_write_files = function(x) {
      }
 }
 
-pml_write_files(answers)
+pml_write_files(predictions_complete_testing)
