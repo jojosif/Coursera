@@ -1,5 +1,6 @@
 ---
 title: 'Peer-graded Assignment: R Markdown and Leaflet'
+date: '9/24/2017'
 output:
   html_document:
     keep_md: yes
