@@ -24,7 +24,7 @@ idx = zeros(size(X,1), 1);
 for i = 1:length(X)
     minDist = Inf;
     for j = 1:K
-        dist = norm(X(i, :) - centroids(j, :))^2;
+        dist = norm(X(i, :) - centroids(j, :)) ^ 2;
 
         if dist < minDist
             minDist = dist;
