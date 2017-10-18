@@ -1,0 +1,164 @@
+# Data Science Capstone: Milestone Report
+
+## 1. Synopsis
+
+The milestone report will apply data science in the area of natural language processing (NLP), building a predictive model for text input prediction. Below is an exploratory analysis and description of the datasets we received from [Swiftkey](http://swiftkey.com/). As can be seen best from the word cloud below, we will need to use more complex language models to truly tease out context and do prediction based on these datasets.
+
+The main deliverables are:
+ 
++ Demonstrate that you've downloaded the data and have successfully loaded it in.
++ Create a basic report of summary statistics about the data sets.
++ Report any interesting findings that you amassed so far.
+
+
+
+## 2. Data Processing
+
+### 2.1 Data Loading
+
+Download the dataset and read it into a dataframe.
+
+
+```r
+path <- getwd()
+destfile <- paste(path, "dataFiles.zip", sep = "/")
+
+if (!file.exists(destfile)) {
+	download.file(url = "http://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip", 
+				  destfile, "curl")
+	unzip(zipfile = "dataFiles.zip")
+}
+
+blogs <- readLines("./final/en_US/en_US.blogs.txt", encoding = "UTF-8", skipNul = TRUE)
+news <- readLines("./final/en_US/en_US.news.txt", encoding = "UTF-8", skipNul = TRUE)
+twitter <- readLines("./final/en_US/en_US.twitter.txt", encoding = "UTF-8", skipNul = TRUE)
+```
+
+### 2.2 Generate Data Sample
+
+In order to enable faster data processing, a data sample from all three sources was generated.
+
+
+```r
+sampleTwitter <- twitter[sample(1:length(twitter), 10000)]
+sampleNews <- news[sample(1:length(news), 10000)]
+sampleBlogs <- blogs[sample(1:length(blogs), 10000)]
+textSample <- c(sampleTwitter, sampleNews, sampleBlogs)
+```
+
+
+```r
+# Save text sample
+textSampleCon <- file("./textSample.txt")
+writeLines(textSample, textSampleCon)
+close(textSampleCon)
+```
+
+
+```r
+textSampleCon <- file("./textSample.txt")
+textSample <- readLines(textSampleCon)
+close(textSampleCon)
+```
+
+## 3. Summary Statistics
+
+
+```r
+# Check the size and length of the files and calculate the word count
+blogsFile <- file.info("./final/en_US/en_US.blogs.txt")$size / 1024.0^2
+newsFile <- file.info("./final/en_US/en_US.news.txt")$size / 1024.0^2
+twitterFile <- file.info("./final/en_US/en_US.twitter.txt")$size / 1024.0^2
+sampleFile <- file.info("./textSample.txt")$size / 1024.0^2
+
+blogsLength <- length(blogs)
+newsLength <- length(news)
+twitterLength <- length(twitter)
+sampleLength <- length(textSample)
+
+blogsWords <- sum(sapply(gregexpr("\\S+", blogs), length))
+newsWords <- sum(sapply(gregexpr("\\S+", news), length))
+twitterWords <- sum(sapply(gregexpr("\\S+", twitter), length))
+sampleWords <- sum(sapply(gregexpr("\\S+", textSample), length))
+```
+
+
+```r
+fileSummary <- data.frame(
+        fileName = c("Blogs", "News", "Twitter", "Aggregated Sample"),
+        fileSize = c(round(blogsFile, digits = 2), 
+                     round(newsFile,digits = 2), 
+                     round(twitterFile, digits = 2),
+                     round(sampleFile, digits = 2)),
+        lineCount = c(blogsLength, newsLength, twitterLength, sampleLength),
+        wordCount = c(blogsWords, newsWords, twitterWords, sampleLength))
+```
+
+
+
+
+
+The following table provides an overview of the imported data. In addition to the size of each data set, the number of lines and words are displayed. 
+
+
+```r
+knitr::kable(head(fileSummaryDF, 10))
+```
+
+
+
+File Name            File Size (Mb)   Line Count   Word Count
+------------------  ---------------  -----------  -----------
+Blogs                        200.42       899288     37334147
+News                         196.28      1010242     34372530
+Twitter                      159.36      2360148     30373603
+Aggregated Sample              4.76        30000        30000
+
+## 4. Data Exploration
+
+### 4.1 Building A Clean Text Corpus
+
+By using the [tm](http://tm.r-forge.r-project.org/index.html) package the sample data would get cleaned. With cleaning the text data would be converted into lowercased, meanwhile punctuations, numbers and URLs would be removed. After that stop and profanity words would be got rid of from the text sample. In the end, a clean text corpus used for subsequent processing would be achieved.
+
+The profanity corpus used can be retrieved [here](https://github.com/theodoreguo/Coursera/blob/master/Data%20Science/10.%20Data%20Science%20Capstone/Week%202%20-%20Exploratory%20Data%20Analysis%20and%20Modeling/Course%20Project/profanityfilter.txt).
+
+
+```r
+# Load profanity corpus
+profanityWords <- read.table("./profanityfilter.txt", header = FALSE)
+
+# Build the corpus, and specify the source to be character vectors 
+cleanSample <- Corpus(VectorSource(textSample))
+
+# Remove textSample object
+rm(textSample)
+
+cleanSample <- tm_map(cleanSample, content_transformer(function(x) iconv(x, to="UTF-8", sub="byte")))
+# Convert to lower case
+cleanSample <- tm_map(cleanSample, content_transformer(tolower))
+
+# Remove punctuation, numbers, URLs, stop, profanity and stem wordson
+cleanSample <- tm_map(cleanSample, content_transformer(removePunctuation))
+cleanSample <- tm_map(cleanSample, content_transformer(removeNumbers))
+removeURL <- function(x) gsub("http[[:alnum:]]*", "", x) 
+cleanSample <- tm_map(cleanSample, content_transformer(removeURL))
+cleanSample <- tm_map(cleanSample, stripWhitespace)
+cleanSample <- tm_map(cleanSample, removeWords, stopwords("english"))
+cleanSample <- tm_map(cleanSample, removeWords, profanityWords$V1)
+cleanSample <- tm_map(cleanSample, stemDocument)
+cleanSample <- tm_map(cleanSample, stripWhitespace)
+```
+
+
+
+### 4.2 Data Visualization
+
+Generally speaking, a word cloud will provide a first overview of the word frequencies. The word cloud below shows the data of the aggregated sample file.
+
+![](PA_report_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
+## 5. Interesting Findings
+
++ The processing is timeconsuming because of the huge file size of the dataset. It is indispensable to create a data sample for text mining in order to code running time.
+
++ Removing all stopwords from the corpus is recommended, but considering stopwords are a fundamental part of languages, it should be taken into account to include these stopwords in the prediction application again.
