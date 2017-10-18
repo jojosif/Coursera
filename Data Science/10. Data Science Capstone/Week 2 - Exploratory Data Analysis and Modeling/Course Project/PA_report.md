@@ -112,11 +112,11 @@ File Name            File Size (Mb)   Line Count   Word Count
 Blogs                        200.42       899288     37334147
 News                         196.28      1010242     34372530
 Twitter                      159.36      2360148     30373603
-Aggregated Sample              4.76        30000        30000
+Aggregated Sample              4.83        30000        30000
 
 ## 4. Data Exploration
 
-### 4.1 Building A Clean Text Corpus
+### 4.1 Build A Clean Text Corpus
 
 By using the [tm](http://tm.r-forge.r-project.org/index.html) package the sample data would get cleaned. With cleaning the text data would be converted into lowercased, meanwhile punctuations, numbers and URLs would be removed. After that stop and profanity words would be got rid of from the text sample. In the end, a clean text corpus used for subsequent processing would be achieved.
 
