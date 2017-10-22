@@ -1,0 +1,50 @@
+Data Science Capstone
+========================================================
+author: Theo
+
+This presentation will briefly but comprehensively pitch an application for predicting the next word.
+
+The application is the capstone project for the Coursera Data Science Specialization held by professors of the Johns Hopkins University and in cooperation with SwiftKey.
+![SwiftKey, Bloomberg & Coursera Logo](logos.png)
+
+Prolegomenon
+========================================================
+
+The task of this work is to create a shiny application, which accepts an input from the user and predicts the next word. This kind of task is especcially useful for smartphones with small screen keyboards. There are several of such applications on the market, one of the most famous is provided by [SwiftKey](https://swiftkey.com "Click to check"). 
+
+This exercise was divided into seven sub tasks like data cleansing, exploratory analysis, the creation of a predictive model and more.
+
+The text data for this application comes from Coursera internal [Capstone Dataset](http://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip "Click to download"). 
+
+All text mining and natural language processing was done with the usage of a variety of well-known R packages.
+
+Underlying Processing & Algorithm
+========================================================
+
+After creating a data sample from the provided corpus, this sample was cleaned by conversion to lowercase, removing punctuation, links, white space, numbers and all kinds of special characters. This data sample was then [tokenized](http://en.wikipedia.org/wiki/Tokenization_%28lexical_analysis%29) into so-called [*n*-grams](http://en.wikipedia.org/wiki/N-gram). 
+
+> In the fields of computational linguistics and probability, an *n*-gram is a continuous sequence of n items from a given sequence of text or speech.
+
+The underlying algorithm used for the application is *n*-gram model with [Stupid Backoff](http://www.cs.columbia.edu/~smaskey/CS6998-0412/supportmaterial/langmodel_mapreduce.pdf).
+
+Those aggregated uni-, bi- and tri- term frequency matrices have been transferred into frequency dictionaries.
+
+The resulting data frames are used to predict the next word in connection with the text input by a user of the application and the frequencies of the underlying *n*-grams table.
+
+Application Instructions
+========================================================
+
+The user interface of this application was shown below.
+
+Type in a sentence in the left text field, hit enter (or press the "Predict Next" button), and the top 3 words predicted will display as follows.
+
+![Application Screenshot](app_interface.png)
+
+References
+========================================================
+
+- [Text Mining Infrastructure in R](http://www.jstatsoft.org/article/view/v025i05)
+
+- [Large Language Models in Machine Translation](http://www.cs.columbia.edu/~smaskey/CS6998-0412/supportmaterial/langmodel_mapreduce.pdf)
+
+- [Coursera Discussion Forums](https://www.coursera.org/learn/data-science-project/discussions)
