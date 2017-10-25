@@ -1,33 +1,45 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
+library(shinythemes)
+library(markdown)
 
-# Define UI for application that draws a histogram
-shinyUI(fluidPage(
-  
-  # Application title
-  titlePanel("Old Faithful Geyser Data"),
-  
-  # Sidebar with a slider input for number of bins 
-  sidebarLayout(
-    sidebarPanel(
-       sliderInput("bins",
-                   "Number of bins:",
-                   min = 1,
-                   max = 50,
-                   value = 30)
-    ),
-    
-    # Show a plot of the generated distribution
-    mainPanel(
-       plotOutput("distPlot")
-    )
-  )
-))
+shinyUI(
+    fluidPage(
+        theme = shinytheme("flatly"),
+        
+        pageWithSidebar(
+            # Application title
+            titlePanel("Natural Language Predictor"),
+            
+            # Sidebar with a input text field
+            sidebarPanel(
+                textInput("words",
+                          h4("Input something:"),
+                          "you"),
+                helpText("Only English words are supported."),
+                submitButton("Predict Next")
+            ),
+            
+            mainPanel(
+                tabsetPanel(
+                    tabPanel("Next Word Prediction",
+                             p(''),
+                             p('Type in a sentence in the left text field, hit 
+                               enter (or press the "Predict Next" button), and the most 
+                               possible 3 words predicted will display as 
+                               follows.'),
+                             p('The suggested input "you" shows this clearly.'),
+                             p('Top 3 Possibilities:'),
+                             h3(textOutput('text'))
+                    ),
+                    tabPanel("About This Application",
+                             fluidRow(
+                                 column(2, p('')),
+                                 column(8,
+                                        includeMarkdown("./about/about_app.md")),
+                                 column(2, p('')))
+                    )
+                )  # tabsetPanel
+            )  # mainPanel
+        )  #pageWithSidebar
+    )  #fluidPage
+)  #shinyUI
