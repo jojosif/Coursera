@@ -10,9 +10,9 @@ The application is the capstone project for the Coursera Data Science Specializa
 
 #### Prolegomenon
 
-The task of this work is to create a shiny application, which accepts an input from the user and predicts the next word. This kind of task is especcially useful for smartphones with small screen keyboards. There are several of such applications on the market, one of the most famous is provided by [SwiftKey](https://swiftkey.com "Click to check"). 
+The task of this work is to create a Shiny application, which accepts an input from the user and predicts the next word. This kind of task is especially useful for smartphones with small screen keyboards. There are several of such applications on the market, one of the most famous is provided by [SwiftKey](https://swiftkey.com "Click to check"). 
 
-This exercise was divided into seven sub tasks like data cleansing, exploratory analysis, the creation of a predictive model and more.
+This exercise was divided into several sub tasks like data cleansing, exploratory analysis, the creation of a predictive model and more.
 
 The text data for this application comes from Coursera internal [Capstone Dataset](http://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip "Click to download"). 
 

@@ -5,9 +5,9 @@ account: theoguo
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 227676
-bundleId: 1050386
+bundleId: 1050398
 url: https://theoguo.shinyapps.io/NLPred/
-when: 1509264054.7827
+when: 1509265283.44111
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: prepro_data.R|about/.DS_Store
