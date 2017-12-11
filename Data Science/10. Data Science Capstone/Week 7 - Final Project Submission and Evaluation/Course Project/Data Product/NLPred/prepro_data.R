@@ -111,7 +111,7 @@ uni.matrix <- TermDocumentMatrix(corpus,
 
 unigram <- converse.TDM(uni.matrix)
 
-write.csv(unigram,"unigram.csv")  # Write all words
+write.csv(unigram, "unigram.csv")  # Write all words
 rm(unigram, one.matrix)
 
 # Set of 2-grams
