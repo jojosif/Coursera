@@ -128,7 +128,7 @@ bigram <- converse.TDM(bi.matrix)
 bigram$Words<-as.character(bigram$Words)
 bigram$One <- gsub(" \\w+", "", bigram$Words)
 
-write.csv(bigram,"bigram.csv")  # Write all words
+write.csv(bigram, "bigram.csv")  # Write all words
 rm(bigram, bi.matrix)
 
 # Set of 3-grams building
