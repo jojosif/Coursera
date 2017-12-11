@@ -147,7 +147,7 @@ trigram$Words <- as.character(trigram$Words)
 # Create part for calculations
 trigram$Bi <- gsub("\\s*\\w*$", "", trigram$Words)
 trigram$Third <- gsub("\\w+ ", "", trigram$Words)
-trigram <- trigram[,-1]
+trigram <- trigram[, -1]
 
 write.csv(trigram, "trigram.csv")
 rm(trigram, tri.matrix)
