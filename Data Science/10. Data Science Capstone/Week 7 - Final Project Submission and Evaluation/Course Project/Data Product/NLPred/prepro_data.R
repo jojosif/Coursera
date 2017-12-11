@@ -131,7 +131,7 @@ bigram$One <- gsub(" \\w+", "", bigram$Words)
 write.csv(bigram, "bigram.csv")  # Write all words
 rm(bigram, bi.matrix)
 
-# Set of 3-grams building
+# Set of 3-grams
 TrigramTokenizer <-
     function(x)
         unlist(lapply(ngrams(words(x), 3), paste, collapse = " "), 
