@@ -44,8 +44,8 @@ remove.url <- function(x) {
 
 # Function removes all foreign words in a line
 remove.foreign <- function(x) {
-    x <- unlist(strsplit(x, split=" "))
-    # index <- grep("x", iconv(x, "latin1", "ASCII", sub="x"))
+    x <- unlist(strsplit(x, split = " "))
+    # index <- grep("x", iconv(x, "latin1", "ASCII", sub = "x"))
     index <- grep("[^\x20-\x7E]", x)
     if(length(index) > 0) x <- x[-index]
     x <- paste(x, collapse = " ")
