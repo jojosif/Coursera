@@ -169,7 +169,7 @@ two.predict.kn <- function(w1, w2, d, input, answers = 3) {
     x
 }
 
-prediction.kn <- function(w1, w2, w3, d, input, answers = 3){
+prediction.kn <- function(w1, w2, w3, d, input, answers = 3) {
     
     input <- clean.text(input, "profanity.txt")
     # paste("We predict", answers, "words on following phrase:", input, ", using Kneser-Ney smoothing")
