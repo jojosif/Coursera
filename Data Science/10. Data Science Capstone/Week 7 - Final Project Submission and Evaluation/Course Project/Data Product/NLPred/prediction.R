@@ -3,7 +3,7 @@ library(NLP)
 
 #################### CLEANING INPUT ####################
 # Function removes all #hashtag and @users in a line
-remove.twitter <- function(x){
+remove.twitter <- function(x) {
     x <- gsub("[@#]\\S+\\w", "", x)
     x
 }
