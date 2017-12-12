@@ -72,7 +72,7 @@ tri.predict <- function(w1, w2, w3, d, input, answers = 3, all.words = 271590) {
     x
 }
 
-two.predict <- function(w1, w2, d, input, answers = 3, all.words = 271590){
+two.predict <- function(w1, w2, d, input, answers = 3, all.words = 271590) {
     tt <- w2[which(w2$One == input), ]
     if (nrow(tt) > 3) tt <- tt[1:3, ]
     tt$Two <- gsub("\\w+ ", "", tt$Words)
