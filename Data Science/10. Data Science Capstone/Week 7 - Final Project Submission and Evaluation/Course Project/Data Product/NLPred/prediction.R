@@ -108,7 +108,7 @@ prediction.sb <- function(w1, w2, w3, input, answers = 3, profanity = "profanity
         } else {
             second <- gsub("\\w+ ", "", input)
             if(dim(w2[which(w2$One == second), ])[1] > 0) {
-                two.predict(w1, w2, d, input=second, answers)
+                two.predict(w1, w2, d, input = second, answers)
             } else {
                 one.predict(w1, input, answers)
             }
