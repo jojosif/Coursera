@@ -146,7 +146,7 @@ tri.predict.kn <- function(w1, w2, w3, d, input, answers = 3) {
     x
 }
 
-two.predict.kn <- function(w1, w2, d, input, answers = 3){
+two.predict.kn <- function(w1, w2, d, input, answers = 3) {
     tt <- w2[which(w2$One == input),]
     
     coef.two <- d[3] * nrow(tt) / sum(tt$Frequency) / d[4]
