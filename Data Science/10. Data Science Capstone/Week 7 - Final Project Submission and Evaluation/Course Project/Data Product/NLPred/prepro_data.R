@@ -1,4 +1,4 @@
-#################### PREPERATION ####################
+#################### PREPARATION ####################
 # Turn on necessary libraries
 libs <- c("rJava", "NLP", "openNLP", "tm", "filehash", "RWeka", "tau")
 sapply(libs, library, character.only = T, logical.return = T, 
